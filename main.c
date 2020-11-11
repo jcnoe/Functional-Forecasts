@@ -8,7 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-void updatePreferences(char **);
+void updatePreferences(char **,char **);
+void getLang(char ***);
 void getUnits(char ***);
 
 struct user {
@@ -25,68 +26,76 @@ int main(void) {
 	printf("---------------- Functional Forecasts ----------------\n\n");
 	printf("----------------- Chandler Noe 2020 ------------------\n\n");
 	printf("Welcome! Please choose your preferences. These values can be changed later!\n\n");
-	printf("main %p\n\n",primary.units);
-	updatePreferences(&primary.units);
+	updatePreferences(&primary.units,&primary.lang);
 
-	printf("Units: %s", primary.units);
+	printf("Units: %s\n\n", primary.units);
+	//printf("Lang: %s\n\n", primary.lang);
 
-	//free(primary.units);
-	
+	free(primary.units);
+	//free(primary.lang);
+
 	return 0;
 
 }
 
-void updatePreferences(char **userUnits) {
+void updatePreferences(char **userUnits,char **userLang) {
 
-	//char language[32];
-
-	printf("update %p\n\n",userUnits);
 	getUnits(&userUnits);
-	//printf("Please select a language: ");
-	//Add loop to print available languages
-	//scanf("%s", language);
-	//printf("\n");
-	//Add error checking and conversion to two digit language code
-	//new.lang = language;
-	//getLanguage();
+	getLang(&userLang);
 
 	return;
 
 }
 
-void getUnits(char ***orig) {
+void getLang(char ***origLang) {
 
 	int choice;
 
-	printf("getUnits %p\n\n",orig);
+	printf("Please select an option for your preferred language: \n");
+
+	printf("Selection: ");
+	scanf("%i", &choice);
+	printf("\n");
+
+
+	return;
+
+	getLang(origLang);
+
+}
+
+void getUnits(char ***origUnits) {
+
+	int choice;
 
 	printf("Please select an option for your preferred measurement: \n");
-	//Loop thru options
-	printf("Preference: ");
+	printf("1: Standard\n2: Metric\n3: Imperial\n\n");
+	printf("Selection: ");
 	scanf("%i", &choice);
+	printf("\n");
 	switch (choice) {
 
 		case 1:
 			//Standard
-			**orig = malloc(strlen("standard")+1);
-			strcpy(**orig, "standard");
+			**origUnits = malloc(strlen("standard")+1);
+			strcpy(**origUnits, "standard");
 			return;
 		case 2:
 			//Metric
-			**orig = malloc(strlen("metric")+1);
-			strcpy(**orig, "metric");
+			**origUnits = malloc(strlen("metric")+1);
+			strcpy(**origUnits, "metric");
 			return;
 		case 3:
 			//Imperial
-			**orig = malloc(strlen("imperial")+1);
-			strcpy(**orig, "imperial");
+			**origUnits = malloc(strlen("imperial")+1);
+			strcpy(**origUnits, "imperial");
 			return;
 		default:
-			printf("Invalid choice!\n");
+			printf("Invalid selection!!!\n\n");
 			break;
 
 	}
 
-	getUnits(orig);
+	getUnits(origUnits);
 
 }
