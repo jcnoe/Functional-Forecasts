@@ -4,21 +4,7 @@
 
 // 6deaf3408385dc5d36ccc6543b8cd84e
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-
-void updatePreferences(char **,char **);
-void getLang(char ***);
-void getUnits(char ***);
-
-struct user {
-
-	char *units;
-	char *lang;
-
-};
+#include "header.h"
 
 int main(void) {
 
@@ -54,7 +40,7 @@ void getLang(char ***origLang) {
 
 	int choice,i;
 	//Read from file? Unhardcode height?
-	char *languages[47][2] = {
+	char *languages[46][2] = {
 
 		{"Afrikaans","af"},
 		{"Albanian","al"},
@@ -115,7 +101,8 @@ void getLang(char ***origLang) {
 	scanf("%i", &choice);
 	printf("\n");
 	if (choice < 1 || choice > 46) {
-
+		
+		printf("Invalid selection!!!\n\n");
 		getLang(origLang);
 
 	}
