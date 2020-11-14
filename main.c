@@ -13,26 +13,51 @@ int main(void) {
 	printf("---------------- Functional Forecasts ----------------\n\n");
 	printf("----------------- Chandler Noe 2020 ------------------\n\n");
 	printf("Welcome! Please choose your preferences. These values can be changed later!\n\n");
-	updatePreferences(&primary.units,&primary.lang);
+	updatePreferences(&primary.key,&primary.units,&primary.lang);
 	
-	
-
 	printf("Units: %s\n\n", primary.units);
 	printf("Lang: %s\n\n", primary.lang);
-
+	printf("Key: %s\n\n", primary.key);
 	free(primary.units);
 	free(primary.lang);
+	free(primary.key);
 
 	return 0;
 
 }
 
-void updatePreferences(char **userUnits,char **userLang) {
+void updatePreferences(char **userKey,char **userUnits,char **userLang) {
 
+	getKey(&userKey);
 	getUnits(&userUnits);
 	getLang(&userLang);
 
 	return;
+
+}
+
+void getKey(char ***origKey) {
+
+	//Unhardcode this, max api key length?
+	char choice[33];
+	int valid = 1;
+	printf("Please enter your OpenWeatherMap API key: ");
+	fgets(choice, 33, stdin);
+	printf("\n");
+	//Poll API to see if this is a valid key
+	if (valid) {
+		
+		**origKey = malloc(strlen(choice)+1);
+		strcpy(**origKey, choice);
+		return;
+
+	}
+	else {
+
+		printf("Invalid key!!!\n\n");
+		getKey(origKey);
+
+	}
 
 }
 

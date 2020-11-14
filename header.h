@@ -6,7 +6,9 @@
 #include <string.h>
 #include <stdbool.h>
 
-void updatePreferences(char **,char **);
+void updatePreferences(char **,char **,char **);
+
+void getKey(char ***);
 
 void getLang(char ***);
 
@@ -16,6 +18,7 @@ struct user {
 
 	char *units;
 	char *lang;
+	char *key;
 
 };
 
