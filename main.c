@@ -41,10 +41,8 @@ void getKey(char ***origKey) {
 	//Unhardcode this, max api key length?
 	char choice[33];
 	int valid = 1;
-	printf("Please enter your OpenWeatherMap API key: ");
-	fgets(choice, 33, stdin);
-	fflush(stdin);
-	printf("\n");
+
+	getInput("Please enter your OpenWeatherMap API key: ", choice, sizeof(choice));
 	//Poll API to see if this is a valid key
 	if (valid) {
 		
@@ -64,7 +62,8 @@ void getKey(char ***origKey) {
 
 void getLang(char ***origLang) {
 
-	int choice,i;
+	int i;
+	char choice[3];
 	//Read from file? Unhardcode height?
 	char *languages[46][2] = {
 
@@ -123,10 +122,8 @@ void getLang(char ***origLang) {
 		printf("%i: %s\n", i+1, languages[i][0]);
 
 	}
-	printf("Selection: ");
-	scanf("%i", &choice);
-	printf("\n");
-	if (choice < 1 || choice > 46) {
+	getInput("Selection: ", choice, sizeof(choice));
+	if (atoi(choice) < 1 || atoi(choice) > 46) {
 		
 		printf("Invalid selection!!!\n\n");
 		getLang(origLang);
@@ -134,8 +131,8 @@ void getLang(char ***origLang) {
 	}
 	else {
 
-		**origLang = malloc(strlen(languages[choice-1][1])+1);
-		strcpy(**origLang, languages[choice-1][1]);
+		**origLang = malloc(strlen(languages[atoi(choice)-1][1])+1);
+		strcpy(**origLang, languages[atoi(choice)-1][1]);
 		return;
 
 	}
@@ -144,14 +141,12 @@ void getLang(char ***origLang) {
 
 void getUnits(char ***origUnits) {
 
-	char choice[1];
+	char choice[2];
 
 	printf("Please select an option for your preferred measurement: \n");
 	printf("1: Standard\n2: Metric\n3: Imperial\n\n");
-	printf("Selection: ");
 	//This needs to be sorted out
-	fgets(choice, 2, stdin);
-	printf("\n");
+	getInput("Selection: ", choice, sizeof(choice));
 	switch (atoi(choice)) {
 
 		case 1:
