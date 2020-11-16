@@ -43,6 +43,7 @@ void getKey(char ***origKey) {
 	int valid = 1;
 	printf("Please enter your OpenWeatherMap API key: ");
 	fgets(choice, 33, stdin);
+	fflush(stdin);
 	printf("\n");
 	//Poll API to see if this is a valid key
 	if (valid) {
@@ -143,14 +144,15 @@ void getLang(char ***origLang) {
 
 void getUnits(char ***origUnits) {
 
-	int choice;
+	char choice[1];
 
 	printf("Please select an option for your preferred measurement: \n");
 	printf("1: Standard\n2: Metric\n3: Imperial\n\n");
 	printf("Selection: ");
-	scanf("%i", &choice);
+	//This needs to be sorted out
+	fgets(choice, 2, stdin);
 	printf("\n");
-	switch (choice) {
+	switch (atoi(choice)) {
 
 		case 1:
 			//Standard
@@ -174,5 +176,38 @@ void getUnits(char ***origUnits) {
 	}
 
 	getUnits(origUnits);
+
+}
+
+//This should not be called with a buffer < 2 !!!
+int getInput (char *prompt,char *buffer, size_t bufferSize) {
+	
+	size_t length;
+	int count, ch;
+
+	if (bufferSize < 2)
+		return SMALL_BUFFER;
+
+	if (prompt != NULL) {
+		printf("%s",prompt);
+		fflush(stdout);
+	}
+
+	if (fgets(buffer, bufferSize, stdin) == NULL)
+		return NO_INPUT;
+	
+	length = strlen(buffer);
+	if (length < 1)
+		return NO_INPUT;
+
+	if (buffer[length-1] != '\n') {
+		count = 0;
+		while (((ch = getchar()) != '\n') && (ch != EOF))
+			count = 1;
+		return (count == 1) ? TOO_LONG : VALID;
+	}
+
+	buffer[length - 1] = '\0';
+	return VALID;
 
 }
