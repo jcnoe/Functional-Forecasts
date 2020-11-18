@@ -2,8 +2,6 @@
 
 // Chandler Noe - 2020
 
-// 6deaf3408385dc5d36ccc6543b8cd84e
-
 #include "header.h"
 
 int main(void) {
