@@ -45,7 +45,7 @@ void getKey(char ***origKey) {
 
 	ret = getInput("Please enter your OpenWeatherMap API key: ", choice, sizeof(choice));
 	if (ret == NO_INPUT || ret == TOO_LONG) {
-		printf("\nInvalid key!!!\n\n");
+		printf("\nInvalid key!!! getInput!\n\n");
 		getKey(origKey);
 	}
 	//Poll API to see if this is a valid key
@@ -68,6 +68,7 @@ void getKey(char ***origKey) {
 void getLang(char ***origLang) {
 
 	int i, ret;
+	int valid = 1;
 	char choice[3];
 	//Read from file? Unhardcode height?
 	char *languages[46][2] = {
@@ -121,31 +122,29 @@ void getLang(char ***origLang) {
 
 	};
 
-	printf("\nPlease select an option for your preferred language: \n");
-	for (i=0;i<46;i++) {
+	while (valid) {
 
-		if (i % 2 == 0 && i != 0)
-			printf("\n");
-		printf("%i: %-24s", i+1, languages[i][0]);
+		printf("\nPlease select an option for your preferred language: \n");
+		for (i=0;i<46;i++) {
+
+			if (i % 2 == 0 && i != 0)
+				printf("\n");
+				printf("%i: %-24s", i+1, languages[i][0]);
 		
-	}
-	printf("\n\n");
-	ret = getInput("Selection: ", choice, sizeof(choice));
-	if (ret == NO_INPUT || ret == TOO_LONG) {
-		printf("\nInvalid selection!!!\n\n");
-		getLang(origLang);
-	}
-	if (atoi(choice) < 1 || atoi(choice) > 46) {
-		
-		printf("\nInvalid selection!!!\n\n");
-		getLang(origLang);
+		}
+		printf("\n\n");
+		ret = getInput("Selection: ", choice, sizeof(choice));
+		printf("\nChoice: %s\n", choice);
+		if (ret == NO_INPUT || ret == TOO_LONG || atoi(choice) < 1 || atoi(choice) > 46)
+			printf("\nInvalid selection!!!\n\n");
+		else {
 
-	}
-	else {
+			**origLang = malloc(strlen(languages[atoi(choice)-1][1])+1);
+			strcpy(**origLang, languages[atoi(choice)-1][1]);
+			valid = 0;
+			return;
 
-		**origLang = malloc(strlen(languages[atoi(choice)-1][1])+1);
-		strcpy(**origLang, languages[atoi(choice)-1][1]);
-		return;
+		}
 
 	}
 
@@ -155,39 +154,43 @@ void getUnits(char ***origUnits) {
 
 	char choice[2];
 	int ret;
+	int valid = 1;
 
-	printf("\nPlease select an option for your preferred measurement: \n");
-	printf("1: Standard\n2: Metric\n3: Imperial\n\n");
-	//This needs to be sorted out
-	ret = getInput("Selection: ", choice, sizeof(choice));
-	if (ret == NO_INPUT || ret == TOO_LONG) {
+	while (valid) {
+
+		printf("\nPlease select an option for your preferred measurement: \n");
+		printf("1: Standard\n2: Metric\n3: Imperial\n\n");
+		ret = getInput("Selection: ", choice, sizeof(choice));
+		if (ret == NO_INPUT || ret == TOO_LONG)
+			valid = 1;
+		switch (atoi(choice)) {
+
+			case 1:
+				//Standard
+				**origUnits = malloc(strlen("standard")+1);
+				strcpy(**origUnits, "standard");
+				valid = 0;
+				return;
+			case 2:
+				//Metric
+				**origUnits = malloc(strlen("metric")+1);
+				strcpy(**origUnits, "metric");
+				valid = 0;
+				return;
+			case 3:
+				//Imperial
+				**origUnits = malloc(strlen("imperial")+1);
+				strcpy(**origUnits, "imperial");
+				valid = 0;
+				return;
+			default:
+				break;
+
+		}
+
 		printf("\nInvalid selection!!!\n\n");
-		getUnits(origUnits);
+	
 	}
-	switch (atoi(choice)) {
-
-		case 1:
-			//Standard
-			**origUnits = malloc(strlen("standard")+1);
-			strcpy(**origUnits, "standard");
-			return;
-		case 2:
-			//Metric
-			**origUnits = malloc(strlen("metric")+1);
-			strcpy(**origUnits, "metric");
-			return;
-		case 3:
-			//Imperial
-			**origUnits = malloc(strlen("imperial")+1);
-			strcpy(**origUnits, "imperial");
-			return;
-		default:
-			printf("\nInvalid selection!!!\n\n");
-			break;
-
-	}
-
-	getUnits(origUnits);
 
 }
 
