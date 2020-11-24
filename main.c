@@ -7,17 +7,51 @@
 int main(void) {
 
 	struct user primary;
+	char choice[2];
+	int quit = 1;
 
 	printf("---------------- Functional Forecasts ----------------\n\n");
 	printf("----------------- Chandler Noe 2020 ------------------\n\n");
 	printf("Welcome! Please choose your preferences. These values can be changed later!\n\n");
 	updatePreferences(&primary.key,&primary.units,&primary.lang);
+
+	//Main loop
+	do {
+
+		//Debugging purposes only
+		//printf("\n");
+		//printf("Units: %s\n\n", primary.units);
+		//printf("Lang: %s\n\n", primary.lang);
+		//printf("Key: %s\n\n", primary.key);
+
+		printf("Select an option.\n");
+		printf("1: Forecast\n2: Update Preferences\n3: Help\n4: Quit\n\n");
+		getInput("Selection: ", choice, sizeof(choice));
+		printf("\n");
+		switch(atoi(choice)) {
+
+			case 1:
+				printf("Forecast\n\n");
+				break;
+			case 2:
+				updatePreferences(&primary.key,&primary.units,&primary.lang);
+				break;
+			case 3:
+				printHelp();
+				break;
+			case 4:
+				printf("Quitting...\n\n");
+				quit = 0;
+				break;
+			default:
+				printf("Invalid selection!!!\n\n");
+				break;
 	
-	//For debugging
-	printf("\n");
-	printf("Units: %s\n\n", primary.units);
-	printf("Lang: %s\n\n", primary.lang);
-	printf("Key: %s\n\n", primary.key);
+		}
+
+	} while (quit);
+
+	//Free (make function)
 	free(primary.units);
 	free(primary.lang);
 	free(primary.key);
@@ -134,7 +168,8 @@ void getLang(char ***origLang) {
 		}
 		printf("\n\n");
 		ret = getInput("Selection: ", choice, sizeof(choice));
-		printf("\nChoice: %s\n", choice);
+		printf("\n");
+		//printf("\nChoice: %s\n", choice);
 		if (ret == NO_INPUT || ret == TOO_LONG || atoi(choice) < 1 || atoi(choice) > 46)
 			printf("\nInvalid selection!!!\n\n");
 		else {
@@ -224,5 +259,12 @@ int getInput (char *prompt,char *buffer, size_t bufferSize) {
 
 	buffer[length - 1] = '\0';
 	return VALID;
+
+}
+
+void printHelp(void) {
+
+	printf("Lorem ipsum dolor sit amet\n\n");
+	return;
 
 }
